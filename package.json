@@ -15,5 +15,10 @@
   "bugs": {
     "url": "https://github.com/ember-cli/blueprint/issues"
   },
-  "homepage": "https://github.com/ember-cli/blueprint"
+  "homepage": "https://github.com/ember-cli/blueprint",
+  "devDependencies": {
+    "mocha": "^2.1.0",
+    "chai": "^1.10.0",
+    "tmp-sync": "^1.0.1"
+  }
 }
