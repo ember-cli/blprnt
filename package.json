@@ -19,6 +19,7 @@
   "devDependencies": {
     "mocha": "^2.1.0",
     "chai": "^1.10.0",
-    "tmp-sync": "^1.0.1"
+    "tmp-sync": "^1.0.1",
+    "rsvp": "^3.0.16"
   }
 }
