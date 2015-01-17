@@ -1,0 +1,19 @@
+{
+  "name": "ember-cli-blueprint",
+  "version": "0.0.0",
+  "description": "A tool for describing and generating files and directory structures",
+  "main": "index.js",
+  "scripts": {
+    "test": "mocha tests/**/*-test.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/ember-cli/blueprint"
+  },
+  "author": "Jake Bixby, Jamie White and ember-cli contributors",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/ember-cli/blueprint/issues"
+  },
+  "homepage": "https://github.com/ember-cli/blueprint"
+}
