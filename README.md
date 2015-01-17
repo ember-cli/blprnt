@@ -1,5 +1,7 @@
 ## Blueprint
 
+**Under Construction**
+
 A tool for describing and generating files and directory structures.
 
 Extracted from [ember-cli](http://ember-cli.com/).
