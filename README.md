@@ -23,7 +23,7 @@ example-blueprint/
 ```js
 var Blueprint = require('ember-cli-blueprint');
 
-var exampleBlueprint = new Blueprint('path/to/example-blueprint');
+var exampleBlueprint = Blueprint.load('path/to/example-blueprint');
 
 var model = {
   name: 'foo'

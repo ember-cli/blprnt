@@ -14,7 +14,7 @@ describe('Blueprint', function() {
   });
 
   it('creates the correct files and directories', function() {
-    var exampleBlueprint = new Blueprint('../fixtures/blueprints/example-blueprint');
+    var exampleBlueprint = Blueprint.load('../fixtures/blueprints/example-blueprint');
     var model = {
       name: 'foo'
     };
