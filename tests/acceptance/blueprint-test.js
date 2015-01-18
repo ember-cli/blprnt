@@ -24,7 +24,7 @@ describe('Blueprint', function() {
 
     return exampleBlueprint.install(model, options)
       .then(function() {
-        var filePath, actual
+        var filePath, actual;
 
         filePath = path.join(tmpdir, 'lib/foo.js');
         actual = fs.readFileSync(filePath, { encoding: 'utf-8' });
