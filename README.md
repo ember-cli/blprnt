@@ -1,5 +1,7 @@
 ## Blueprint
 
+[![Build Status](https://travis-ci.org/ember-cli/blueprint.svg?branch=master)](https://travis-ci.org/ember-cli/blueprint)
+
 **Under Construction**
 
 A tool for describing and generating files and directory structures.
@@ -30,7 +32,12 @@ var model = {
 };
 
 var options = {
-  destDir: 'path/to/destination'
+  destDir: 'path/to/destination',
+  actions: {
+    beforeWriteFile: function(fileInfo) {
+      ui.writeLine('  ' + chalk.green('create') + ' ' + info.displayPath);
+    }
+  }
 };
 
 fooBlueprint.install(model, options)
