@@ -27,20 +27,14 @@ var Blueprint = require('ember-cli-blueprint');
 
 var exampleBlueprint = Blueprint.load('path/to/example-blueprint');
 
-var model = {
-  name: 'foo'
-};
-
 var options = {
-  destDir: 'path/to/destination',
-  actions: {
-    beforeWriteFile: function(fileInfo) {
-      ui.writeLine('  ' + chalk.green('create') + ' ' + info.displayPath);
-    }
-  }
+  entity: {
+    name: 'foo'
+  },
+  target: 'path/to/destination'
 };
 
-fooBlueprint.install(model, options)
+fooBlueprint.install(options)
   .then(function() {
     console.log('Done!');
   });
