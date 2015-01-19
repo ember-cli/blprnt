@@ -14,15 +14,31 @@ describe('Blueprint', function() {
   });
 
   it('creates the correct files and directories', function() {
-    var exampleBlueprint = Blueprint.load('../fixtures/blueprints/example-blueprint');
-    var model = {
-      name: 'foo'
-    };
+    var exampleBlueprint = Blueprint.load('tests/fixtures/blueprints/example-blueprint');
+
     var options = {
-      destDir: tmpdir
+      entity: {
+        name: 'foo'
+      },
+      target: tmpdir,
+      project: {
+        config: function() {
+          return {};
+        },
+        name: function() {
+          return 'foo';
+        },
+        root: tmpdir,
+        isEmberCliProject: function() {
+          return true;
+        }
+      },
+      ui: {
+        writeLine: function(str) {}
+      }
     };
 
-    return exampleBlueprint.install(model, options)
+    return exampleBlueprint.install(options)
       .then(function() {
         var filePath, actual;
 
