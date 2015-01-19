@@ -1,1 +1,1 @@
-// A test for <%= name %>
+// A test for <%= camelizedModuleName %>
