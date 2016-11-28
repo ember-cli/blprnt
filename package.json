@@ -4,7 +4,7 @@
   "description": "A tool for describing and generating files and directory structures",
   "main": "index.js",
   "scripts": {
-    "test": "mocha tests/**/*"
+    "test": "mocha tests/{unit,acceptance}/**/*"
   },
   "repository": {
     "type": "git",
