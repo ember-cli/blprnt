@@ -29,7 +29,12 @@ describe('Blueprint', function() {
           return 'foo';
         },
         root: tmpdir,
+        // TODO: refactor out
         isEmberCliProject: function() {
+          return true;
+        },
+        // TODO: refactor out
+        isEmberCLIAddon: function() {
           return true;
         }
       },
