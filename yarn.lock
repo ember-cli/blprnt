@@ -614,6 +614,12 @@ pinkie@^2.0.0:
   version "2.0.4"
   resolved "https://registry.npmjs.org/pinkie/-/pinkie-2.0.4.tgz#72556b80cfa0d48a974e80e77248e80ed4f7f870"
 
+promise-map-series:
+  version "0.2.3"
+  resolved "https://registry.npmjs.org/promise-map-series/-/promise-map-series-0.2.3.tgz#c2d377afc93253f6bd03dbb77755eb88ab20a847"
+  dependencies:
+    rsvp "^3.0.14"
+
 punycode@^1.4.1:
   version "1.4.1"
   resolved "https://registry.npmjs.org/punycode/-/punycode-1.4.1.tgz#c0d5a63b2718800ad8e1eb0fa5269c84dd41845e"
@@ -665,7 +671,7 @@ rimraf@~2.2.6:
   version "2.2.8"
   resolved "https://registry.npmjs.org/rimraf/-/rimraf-2.2.8.tgz#e439be2aaee327321952730f99a8929e4fc50582"
 
-rsvp:
+rsvp, rsvp@^3.0.14:
   version "3.3.3"
   resolved "https://registry.npmjs.org/rsvp/-/rsvp-3.3.3.tgz#34633caaf8bc66ceff4be3c2e1dffd032538a813"
 
