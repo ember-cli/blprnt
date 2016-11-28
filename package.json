@@ -1,5 +1,5 @@
 {
-  "name": "ember-cli-blueprint",
+  "name": "blprnt",
   "version": "0.0.0",
   "description": "A tool for describing and generating files and directory structures",
   "main": "index.js",
@@ -8,14 +8,14 @@
   },
   "repository": {
     "type": "git",
-    "url": "git://github.com/ember-cli/blueprint"
+    "url": "git://github.com/ember-cli/blprnt"
   },
   "author": "Jake Bixby, Jamie White and ember-cli contributors",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/ember-cli/blueprint/issues"
+    "url": "https://github.com/ember-cli/blprnt/issues"
   },
-  "homepage": "https://github.com/ember-cli/blueprint",
+  "homepage": "https://github.com/ember-cli/blprnt",
   "devDependencies": {
     "chai": "^3.5.0",
     "mocha": "^3.2.0",
