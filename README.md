@@ -26,7 +26,7 @@ example-blueprint/
 ```js
 var Blueprint = require('ember-cli-blueprint');
 
-var exampleBlueprint = Blueprint.load('path/to/example-blueprint');
+var blueprint = Blueprint.load('blprnt');
 
 var options = {
   entity: {
@@ -35,7 +35,7 @@ var options = {
   target: 'path/to/destination'
 };
 
-fooBlueprint.install(options)
+blueprint.install(options)
   .then(function() {
     console.log('Done!');
   });
