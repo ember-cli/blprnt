@@ -5,12 +5,15 @@ var path      = require('path');
 var root      = process.cwd();
 var tmp       = require('tmp-sync');
 var tmproot   = path.join(root, 'tmp');
+var MockUI    = require('console-ui/mock');
 
 describe('Blueprint', function() {
   var tmpdir;
+  var ui;
 
   beforeEach(function() {
     tmpdir = tmp.in(tmproot);
+    ui = new MockUI()
   });
 
   it('creates the correct files and directories', function() {
@@ -38,9 +41,7 @@ describe('Blueprint', function() {
           return true;
         }
       },
-      ui: {
-        writeLine: function(str) {}
-      }
+      ui: ui
     };
 
     return exampleBlueprint.install(options)
