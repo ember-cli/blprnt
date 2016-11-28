@@ -35,6 +35,8 @@
     "inflection": "^1.10.0",
     "isbinaryfile": "^3.0.1",
     "lodash.template": "^4.4.0",
+    "markdown-it": "^8.1.0",
+    "markdown-it-terminal": "^0.0.4",
     "minimatch": "^3.0.3",
     "promise-map-series": "^0.2.3",
     "quick-temp": "^0.1.6",
