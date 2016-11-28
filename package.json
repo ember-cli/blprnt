@@ -37,6 +37,7 @@
     "lodash.template": "^4.4.0",
     "minimatch": "^3.0.3",
     "quick-temp": "^0.1.6",
+    "request": "^2.79.0",
     "rsvp": "^3.3.3",
     "silent-error": "^1.0.1",
     "walk-sync": "^0.3.1"
