@@ -17,7 +17,7 @@ describe('Blueprint', function() {
   });
 
   it('creates the correct files and directories', function() {
-    var exampleBlueprint = Blueprint.load('tests/fixtures/blueprints/example-blueprint');
+    var exampleBlueprint = Blueprint.load('tests-fixtures/blueprints/example-blueprint');
 
     var options = {
       entity: {
