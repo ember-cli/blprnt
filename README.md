@@ -1,6 +1,6 @@
 ## blprnt
 
-[![Build Status](https://travis-ci.org/ember-cli/blueprint.svg?branch=master)](https://travis-ci.org/ember-cli/blueprint)
+[![Build Status](https://travis-ci.org/ember-cli/blprnt.svg?branch=master)](https://travis-ci.org/ember-cli/blprnt)
 [![Build status](https://ci.appveyor.com/api/projects/status/5cg97gtg37i5ajrl/branch/master?svg=true)](https://ci.appveyor.com/project/embercli/blueprint/branch/master)
 
 **Under Construction**
