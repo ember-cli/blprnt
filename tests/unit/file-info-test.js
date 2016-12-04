@@ -31,7 +31,7 @@ describe('Unit - FileInfo', function() {
         outputPath: testOutputPath,
         displayPath: '/pretty-output-path',
         inputPath: path.resolve(__dirname,
-                                '../fixtures/blueprints/with-templating/files/foo.txt'),
+                                '../../tests-fixtures/blueprints/with-templating/files/foo.txt'),
         templateVariables: {},
         ui: ui
       };
@@ -49,8 +49,11 @@ describe('Unit - FileInfo', function() {
 
   it('does not interpolate {{ }} or ${ }', function () {
     var options = {};
-    assign(options, validOptions, {inputPath:  path.resolve(__dirname,
-      '../fixtures/file-info/interpolate.txt'), templateVariables: { name: 'tacocat' }});
+    assign(options, validOptions, {
+      inputPath:  path.resolve(__dirname, '../../tests-fixtures/file-info/interpolate.txt'),
+      templateVariables: { name: 'tacocat' }
+    });
+
     var fileInfo = new FileInfo(options);
     return fileInfo.render().then(function(output) {
       expect(output.trim()).to.equal('{{ name }} ${ name }  tacocat tacocat');
@@ -69,9 +72,11 @@ describe('Unit - FileInfo', function() {
 
   it('rejects if templating throws', function() {
     var templateWithUndefinedVariable = path.resolve(__dirname,
-      '../fixtures/blueprints/with-templating/files/with-undefined-variable.txt');
+      '../../tests-fixtures/blueprints/with-templating/files/with-undefined-variable.txt');
     var options = {};
-    assign(options, validOptions, { inputPath: templateWithUndefinedVariable });
+    assign(options, validOptions, {
+      inputPath: templateWithUndefinedVariable
+    });
     var fileInfo = new FileInfo(options);
 
     return fileInfo.render().then(function() {
@@ -84,7 +89,7 @@ describe('Unit - FileInfo', function() {
   });
 
   it('does not explode when trying to template binary files', function() {
-    var binary = path.resolve(__dirname, '../fixtures/problem-binary.png');
+    var binary = path.resolve(__dirname, '../../tests-fixtures/problem-binary.png');
 
     validOptions.inputPath = binary;
 
@@ -119,7 +124,7 @@ describe('Unit - FileInfo', function() {
     var fileInfo = new FileInfo(validOptions);
 
     return fileInfo.confirmOverwrite('test.js').then(function(action) {
-      td.verify(ui.prompt(td.matchers.anything()), {times: 1});
+      td.verify(ui.prompt(td.matchers.anything()), { times: 1 });
       expect(action).to.equal('overwrite');
     });
   });
@@ -130,7 +135,7 @@ describe('Unit - FileInfo', function() {
     var fileInfo = new FileInfo(validOptions);
 
     return fileInfo.confirmOverwrite('test.js').then(function(action) {
-      td.verify(ui.prompt(td.matchers.anything()), {times: 1});
+      td.verify(ui.prompt(td.matchers.anything()), { times: 1 });
       expect(action).to.equal('skip');
     });
   });
@@ -141,16 +146,15 @@ describe('Unit - FileInfo', function() {
     var fileInfo = new FileInfo(validOptions);
 
     return fileInfo.confirmOverwrite('test.js').then(function(action) {
-      td.verify(ui.prompt(td.matchers.anything()), {times: 1});
+      td.verify(ui.prompt(td.matchers.anything()), { times: 1 });
       expect(action).to.equal('diff');
     });
   });
 
-  it.only('renders a menu without diff and edit options when dealing with binary files', function() {
+  it('renders a menu without diff and edit options when dealing with binary files', function() {
     td.when(ui.prompt(td.matchers.anything())).thenReturn(Promise.resolve({ answer: 'skip' }));
 
-    var binary = path.resolve(__dirname, '../fixtures/problem-binary.png');
-    console.log(binary)
+    var binary = path.resolve(__dirname, '../../tests-fixtures/problem-binary.png');
     validOptions.inputPath = binary;
     var fileInfo = new FileInfo(validOptions);
 
@@ -164,5 +168,4 @@ describe('Unit - FileInfo', function() {
       })));
     });
   });
-
 });
