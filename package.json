@@ -19,6 +19,7 @@
   "devDependencies": {
     "chai": "^3.5.0",
     "console-ui": "^1.0.2",
+    "fixturify": "^0.3.2",
     "mocha": "^3.2.0",
     "temp": "^0.8.3",
     "testdouble": "^1.9.0",
