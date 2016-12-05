@@ -4,7 +4,8 @@
   "description": "A tool for describing and generating files and directory structures",
   "main": "index.js",
   "scripts": {
-    "test": "mocha 'tests/**/*-test.js'"
+    "test": "mocha 'tests/**/*-test.js'",
+    "test:debug": "mocha debug 'tests/**/*-test.js'"
   },
   "repository": {
     "type": "git",
@@ -19,6 +20,7 @@
   "devDependencies": {
     "chai": "^3.5.0",
     "console-ui": "^1.0.2",
+    "fixturify": "^0.3.2",
     "mocha": "^3.2.0",
     "temp": "^0.8.3",
     "testdouble": "^1.9.0",
