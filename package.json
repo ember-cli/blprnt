@@ -49,5 +49,21 @@
     "rsvp": "^3.3.3",
     "silent-error": "^1.0.1",
     "walk-sync": "^0.3.1"
-  }
+  },
+  "files": [
+    "index.js",
+    "utilities/clean-remove.js",
+    "utilities/clean-remove.js",
+    "utilities/diff-highlight.js",
+    "utilities/insert-into-file.js",
+    "utilities/markdown-color.js",
+    "utilities/open-editor.js",
+    "utilities/print-command.js",
+    "utilities/printable-properties.js",
+    "utilities/process-template.js",
+    "utilities/walk-up-path.js",
+    "lib/blueprint.js",
+    "lib/edit-file-diff.js",
+    "file-info.js"
+  ]
 }
