@@ -44,6 +44,7 @@
     "markdown-it-terminal": "^0.0.4",
     "minimatch": "^3.0.3",
     "promise-map-series": "^0.2.3",
+    "proxyquire": "^1.7.10",
     "quick-temp": "^0.1.6",
     "request": "^2.79.0",
     "rsvp": "^3.3.3",
