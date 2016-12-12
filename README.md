@@ -50,3 +50,7 @@ path/to/destination/
 └── tests
     └── foo-test.js
 ```
+
+## Contributors
+
+see: [Contributors.md](CONTRiBUTORS.md)
