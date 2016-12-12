@@ -6,20 +6,30 @@ var FileInfo  = require('../../lib/file-info');
 var path      = require('path');
 var fs        = require('fs-extra');
 var EOL       = require('os').EOL;
-var RSVP   = require('rsvp');
+var RSVP      = require('rsvp');
 var writeFile = RSVP.denodeify(fs.writeFile);
 var root       = process.cwd();
 var tmproot    = path.join(root, 'tmp');
 var assign     = require('ember-cli-lodash-subset').assign;
 var mkTmpDirIn = require('../helpers/mk-tmp-dir-in');
 var td         = require('testdouble');
+var chalk      = require('chalk');
+var EditFileDiff = require('../../lib/edit-file-diff');
 var testOutputPath;
 
-describe('Unit - FileInfo', function() {
+var FIXTURES = path.join(__dirname, '../../tests-fixtures/file-info/');
 
+describe('Unit - FileInfo', function() {
   var validOptions, ui;
+  var openEditor = require('../../lib/utilities/open-editor');
+  var originalCanEdit = openEditor.canEdit;
 
   beforeEach(function() {
+    // force all platforms to have to claim to have an EDITOR
+    openEditor.canEdit = function() {
+      return true;
+    };
+
     return mkTmpDirIn(tmproot).then(function(tmpdir) {
       testOutputPath = path.join(tmpdir, 'outputfile');
 
@@ -39,6 +49,7 @@ describe('Unit - FileInfo', function() {
   });
 
   afterEach(function(done) {
+    openEditor.canEdit = originalCanEdit;
     td.reset();
     fs.remove(tmproot, done);
   });
@@ -175,6 +186,212 @@ describe('Unit - FileInfo', function() {
     });
   });
 
-  describe('.checkForConflict', function() { });
-  describe('.confirmOverwriteTask', function() { });
+  describe('.checkForConflict', function() {
+    it('discover conflict', function() {
+      var info = new FileInfo({
+        inputPath: FIXTURES + 'example.txt',
+        outputPath: FIXTURES + 'example2.txt',
+      });
+
+      return info.checkForConflict().then(function(result) {
+        expect(result).to.eql('confirm');
+      });
+    });
+
+    it('discover NO conflict (target file is the same as the new file)', function() {
+      var info = new FileInfo({
+        inputPath: FIXTURES + 'example.txt',
+        outputPath: FIXTURES + 'example.txt'
+      });
+
+      return info.checkForConflict().then(function(result) {
+        expect(result).to.eql('identical');
+      });
+    });
+
+    it('discover NO conflict (target file is not yet present)', function() {
+      var info = new FileInfo({
+        inputPath: FIXTURES + 'example.txt',
+        outputPath: FIXTURES + 'no-a-file.txt',
+      });
+
+      return info.checkForConflict().then(function(result) {
+        expect(result).to.eql('none');
+      });
+    });
+  });
+
+  describe('.confirmOverwriteTask', function() {
+    var info;
+    var ANSWER_PROMPT = {
+      type: 'expand',
+      name: 'answer',
+      default: false,
+      message: chalk.red('Overwrite') + ' example.txt?',
+      choices: [
+        { key: 'y', name: 'Yes, overwrite', value: 'overwrite' },
+        { key: 'n', name: 'No, skip', value: 'skip' },
+        { key: 'd', name: 'Diff', value: 'diff' },
+        { key: 'e', name: 'Edit', value: 'edit' }
+      ]
+    };
+
+    beforeEach(function() {
+      info = new FileInfo({
+        inputPath: FIXTURES + 'example.txt',
+        outputPath: FIXTURES + 'output/example.txt',
+        displayPath: 'example.txt',
+        ui: ui
+      });
+    });
+
+    describe('diff', function() {
+      it('is unable to display the diff', function() {
+        var displayDiffWasCalled = 0;
+        info.displayDiff = function() {
+          displayDiffWasCalled++;
+          return RSVP.Promise.reject(new Error('Unable to Display Diff'));
+        };
+        var task = info.confirmOverwriteTask();
+
+        td.when(ui.prompt(td.matchers.contains({
+          name: 'answer',
+          message: chalk.red('Overwrite') + ' example.txt?'
+        }))).thenReturn(RSVP.Promise.resolve({
+          answer: 'diff'
+        }));
+
+        return task().then(function() {
+          expect(true).to.eql(false);
+        }, function(reason) {
+          expect(reason.message).to.eql('Unable to Display Diff');
+          td.verify(ui.prompt(ANSWER_PROMPT), { times: 1 });
+          expect(displayDiffWasCalled).to.eql(1);
+        });
+      });
+
+      it('is able to display the diff', function() {
+        var displayDiffWasCalled = 0;
+        info.displayDiff = function() {
+          displayDiffWasCalled++;
+          return RSVP.Promise.resolve();
+        };
+
+        info.EditFileDiff = EditFileDiff;
+        function EditFileDiff() { }
+
+        var editWasCalled = 0;
+        EditFileDiff.prototype.edit = function() {
+          editWasCalled++;
+          return RSVP.Promise.resolve();
+        };
+        var task = info.confirmOverwriteTask();
+
+        td.when(ui.prompt(td.matchers.contains({
+          name: 'answer',
+          message: chalk.red('Overwrite') + ' example.txt?'
+        }))).thenReturn(RSVP.Promise.resolve({ answer: 'diff' }),
+                        // choose `diff` again
+                        RSVP.Promise.resolve({ answer: 'diff' }),
+                        // then finally choose edit
+                        RSVP.Promise.resolve({ answer: 'edit' })
+        );
+
+        return task().then(function() {
+          td.verify(ui.prompt(ANSWER_PROMPT), { times: 3 });
+          expect(displayDiffWasCalled).to.eql(2);
+        });
+      });
+      // cycle
+    });
+
+    describe('edit', function() {
+      it('selects edit action, edit output, and invokes editFileDiff', function() {
+        function EditFileDiff() { }
+
+        var editWasCalled = 0;
+        EditFileDiff.prototype.edit = function() {
+          editWasCalled++;
+          return RSVP.Promise.resolve();
+        };
+
+        var info = new FileInfo({
+          inputPath: FIXTURES + 'example.txt',
+          displayPath: 'example.txt',
+          ui: ui,
+          EditFileDiff: EditFileDiff
+        });
+
+        var task = info.confirmOverwriteTask();
+
+        td.when(ui.prompt(td.matchers.contains({
+          name: 'answer',
+          message: chalk.red('Overwrite') + ' example.txt?'
+        }))).thenReturn(RSVP.Promise.resolve({
+          answer: 'edit'
+        }));
+
+        return task().then(function() {
+          td.verify(ui.prompt(ANSWER_PROMPT), { times: 1 });
+
+          expect(editWasCalled).to.eql(1);
+        });
+      });
+
+      it('first selection fails, but then edit', function() {
+        function EditFileDiff() { }
+
+        var editWasCalled = 0;
+        EditFileDiff.prototype.edit = function() {
+          editWasCalled++;
+          if (editWasCalled === 1) {
+            return RSVP.Promise.reject(new Error('try again'));
+          }
+          return RSVP.Promise.resolve();
+        };
+
+        var info = new FileInfo({
+          inputPath: FIXTURES + 'example.txt',
+          displayPath: 'example.txt',
+          ui: ui,
+          EditFileDiff: EditFileDiff
+        });
+
+        var task = info.confirmOverwriteTask();
+
+        td.when(ui.prompt(td.matchers.contains({
+          name: 'answer',
+          message: chalk.red('Overwrite') + ' example.txt?'
+        }))).thenReturn(RSVP.Promise.resolve({
+          answer: 'edit'
+        }));
+
+        return task().then(function() {
+          td.verify(ui.prompt(ANSWER_PROMPT), { times: 2 });
+          expect(editWasCalled).to.eql(2);
+        });
+      });
+    });
+
+    describe('other (overwrite)', function() {
+      it('selects overwrite action, and overwrite output', function() {
+        var task = info.confirmOverwriteTask();
+
+        td.when(ui.prompt(td.matchers.anything())).thenReturn(Promise.resolve({
+          answer: 'overwrite'
+        }));
+
+        return task().then(function(_info) {
+          expect(_info).to.deep.equal(info);
+          expect(_info.action).to.deep.equal('overwrite');
+          td.verify(ui.prompt(td.matchers.contains({
+            type: 'expand',
+            name: 'answer',
+            default: false,
+            message: chalk.red('Overwrite') + ' example.txt?',
+          })), { times: 1 });
+        })
+      });
+    })
+  });
 });
