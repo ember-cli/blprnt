@@ -1671,7 +1671,7 @@ help in detail');
         project.root = tmpdir;
         blueprint.project = project;
         project.blueprintLookupPaths = function() {
-          return [fixtureBlueprints];
+          return [fixtureBlueprints, __dirname + '/../../blueprints'];
         };
         filename = 'foo-bar-baz.txt';
       });
