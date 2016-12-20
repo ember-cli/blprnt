@@ -112,7 +112,7 @@ var Blueprint = proxyquire('../../lib/blueprint', {
       return readFileSyncStub.apply(this, arguments);
     }
   },
-  '../utilities/printable-properties': {
+  './utilities/printable-properties': {
     blueprint: {
       forEachWithProperty: function() {
         return forEachWithPropertyStub.apply(this, arguments);
