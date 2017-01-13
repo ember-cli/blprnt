@@ -22,3 +22,12 @@ install:
 
 script:
   - npm run test
+
+deploy:
+  provider: npm
+  email: stefan.penner+ember-cli@gmail.com
+  api_key:
+    secure: P8rw+xVuDSHQOH1dB4Rf5aTh5uqZFZ6Ioht3MmYfxlnVjW0xG6F4gQWsd8P7baSV++Fybm5WYPjCsWGA3pB3EZFD05zTT/7BQ8AIsPYU7rBmNbbtaTibCcj0qhJJtxRhmbDTzzvRfcE2ETyOuT42ZVczTvOPBxCtyb8kJyentCg=
+  on:
+    tags: true
+    repo: ember-cli/blprnt
