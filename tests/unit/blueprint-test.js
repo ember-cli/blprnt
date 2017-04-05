@@ -260,7 +260,7 @@ describe('Blueprint', function() {
       });
 
       expect(blueprint.name).to.equal('app');
-      expect(blueprint.path).to.equal(defaultBlueprints + '/app');
+      expect(blueprint.path).to.equal(path.join(defaultBlueprints, 'app'));
 
       expect(blueprint.isBlueprint).to.equal(true);
     });
