@@ -134,6 +134,17 @@ s  `,
 
       expect(result).to.equal(`a\ns\n`);
     });
+
+    it('should trim line with indentation only', function() {
+      var result = editorconfigFix(
+`  
+a`, 
+      {
+        trim_trailing_whitespace: true
+      });
+
+      expect(result).to.equal(`\na\n`);
+    });
   });
 
   describe('end_of_line', function() {
