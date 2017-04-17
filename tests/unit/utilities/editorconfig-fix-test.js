@@ -7,7 +7,7 @@ var expect = require('chai').expect;
 describe('editorconfig-fix', function() {
 
   it('should throw if source is not a string', function() {
-    let disalowed = [{}, [], 777, undefined, null, false, true];
+    var disalowed = [{}, [], 777, undefined, null, false, true];
     disalowed.forEach(d => {
       try {
         editorconfigFix(d, {});
@@ -19,7 +19,7 @@ describe('editorconfig-fix', function() {
   });
   
   it('should throw if editorconfig is not an object', function() {
-    let disalowed = [{}, [], 777, undefined, null, false, true];
+    var disalowed = [{}, [], 777, undefined, null, false, true];
 
     disalowed.forEach(d => {
       try {
