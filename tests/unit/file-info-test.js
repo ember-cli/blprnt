@@ -82,6 +82,25 @@ describe('Unit - FileInfo', function() {
       });
     });
 
+    it('allows a FileInfo to replace the content after render', function() {
+      validOptions.templateVariables.friend = 'Billy';
+      let fileInfo;
+
+      validOptions.replacer = function(content, theFileInfo) {
+        expect(theFileInfo).to.eql(fileInfo);
+        expect(content).to.eql('Howdy Billy\n');
+
+        return content.toUpperCase();
+      };
+
+      fileInfo = new FileInfo(validOptions);
+
+      return fileInfo.render().then(function(output) {
+        expect(output.trim()).to.equal('HOWDY BILLY',
+          'expects the template to have been run');
+      });
+    });
+
     it('rejects if templating throws', function() {
       var templateWithUndefinedVariable = path.resolve(__dirname,
         '../../tests-fixtures/blueprints/with-templating/files/with-undefined-variable.txt');
