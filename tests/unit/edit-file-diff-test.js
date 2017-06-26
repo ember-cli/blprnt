@@ -22,7 +22,7 @@ describe('edit-file-diff', function() {
     it('throws if constructor is called without new', function() {
       expect(function() {
         EditFileDiff();
-      }).to.throw(/Please use the 'new' operator/);
+      }).to.throw(/Please use the `new` operator/);
     });
 
     it('throws if no info is provided', function() {
