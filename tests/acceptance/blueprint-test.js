@@ -1,15 +1,17 @@
-var Blueprint = require('../../index.js');
-var expect    = require('chai').expect;
-var fs        = require('fs');
-var path      = require('path');
-var root      = process.cwd();
-var tmp       = require('tmp-sync');
-var tmproot   = path.join(root, 'tmp');
-var MockUI    = require('console-ui/mock');
+'use strict';
+
+const Blueprint = require('../../index.js');
+const expect    = require('chai').expect;
+const fs        = require('fs');
+const path      = require('path');
+const root      = process.cwd();
+const tmp       = require('tmp-sync');
+const tmproot   = path.join(root, 'tmp');
+const MockUI    = require('console-ui/mock');
 
 describe('Blueprint', function() {
-  var tmpdir;
-  var ui;
+  let tmpdir;
+  let ui;
 
   beforeEach(function() {
     tmpdir = tmp.in(tmproot);
@@ -17,27 +19,27 @@ describe('Blueprint', function() {
   });
 
   it('creates the correct files and directories', function() {
-    var exampleBlueprint = Blueprint.load('tests-fixtures/blueprints/example-blueprint');
+    let exampleBlueprint = Blueprint.load('tests-fixtures/blueprints/example-blueprint');
 
-    var options = {
+    let options = {
       entity: {
         name: 'foo'
       },
       target: tmpdir,
       project: {
-        config: function() {
+        config() {
           return {};
         },
-        name: function() {
+        name() {
           return 'foo';
         },
         root: tmpdir,
         // TODO: refactor out
-        isEmberCliProject: function() {
+        isEmberCliProject() {
           return true;
         },
         // TODO: refactor out
-        isEmberCLIAddon: function() {
+        isEmberCLIAddon() {
           return true;
         }
       },
@@ -45,8 +47,8 @@ describe('Blueprint', function() {
     };
 
     return exampleBlueprint.install(options)
-      .then(function() {
-        var filePath, actual;
+      .then(() => {
+        let filePath, actual;
 
         filePath = path.join(tmpdir, 'lib/foo.js');
         actual = fs.readFileSync(filePath, { encoding: 'utf-8' });

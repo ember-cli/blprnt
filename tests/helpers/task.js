@@ -1,2 +1,3 @@
-var CoreObject = require('core-object');
-module.exports = CoreObject.extend();
+'use strict';
+
+module.exports = require('core-object').extend();

@@ -1,14 +1,16 @@
-var expect = require('chai').expect;
-var fs     = require('fs-extra');
-var path   = require('path');
-var MockUI = require('console-ui/mock');
-var EditFileDiff = require('../../lib/edit-file-diff');
-var td = require('testdouble');
-var fixturify = require('fixturify');
+'use strict';
+
+const expect = require('chai').expect;
+const fs     = require('fs-extra');
+const path   = require('path');
+const MockUI = require('console-ui/mock');
+const EditFileDiff = require('../../lib/edit-file-diff');
+const td = require('testdouble');
+const fixturify = require('fixturify');
 
 describe('edit-file-diff', function() {
-  var ui;
-  var tmpdir = path.join(__dirname, '../../tmp');
+  let ui;
+  const tmpdir = path.join(__dirname, '../../tmp');
 
   beforeEach(function() {
     ui = new MockUI();
@@ -22,7 +24,7 @@ describe('edit-file-diff', function() {
     it('throws if constructor is called without new', function() {
       expect(function() {
         EditFileDiff();
-      }).to.throw(/Please use the `new` operator/);
+      }).to.throw(/invoked without/);
     });
 
     it('throws if no info is provided', function() {
@@ -34,58 +36,58 @@ describe('edit-file-diff', function() {
 
   describe('.edit', function() {
     it('apply no-change patch', function() {
-      var openEditor = td.function('open editor');
+      let openEditor = td.function('open editor');
+      let outputPath = tmpdir + '/empty';
 
-      var outputPath = tmpdir + '/empty';
       fixturify.writeSync(tmpdir, {
         empty: ''
       });
 
-      var file = new EditFileDiff({
+      let file = new EditFileDiff({
         info: {
           outputPath: outputPath,
-          render: function() { return ''; }
+          render() { return ''; }
         },
         ui: ui,
         openEditor: openEditor // pretend to be an text editor but make no changes
       });
 
-      return file.edit().finally(function() {
+      return file.edit().finally(() => {
         td.verify(openEditor(td.matchers.contains('currentDiff.diff')), { times: 1 });
       });
     });
 
     it('apply simple patch', function() {
-      var openEditor = td.function('open editor');
-      var outputPath = tmpdir + '/nonEmpty';
+      let openEditor = td.function('open editor');
+      let outputPath = tmpdir + '/nonEmpty';
       fixturify.writeSync(tmpdir, {
         nonEmpty: 'first this line'
       });
 
-      var file = new EditFileDiff({
+      let file = new EditFileDiff({
         info: {
           outputPath: outputPath,
-          render: function() { return 'then this line'; }
+          render() { return 'then this line'; }
         },
         ui: ui,
         openEditor: openEditor // pretend to be an text editor but make no changes
       });
 
-      return file.edit().then(function() {
+      return file.edit().then(() => {
         expect(fs.readFileSync(outputPath, 'UTF8')).to.eql('then this line\n');
         td.verify(openEditor(td.matchers.contains('currentDiff.diff')), { times: 1 });
       });
     });
 
     it('apply valid patch', function() {
-      var openEditor = td.function('open editor');
+      let openEditor = td.function('open editor');
       td.when(openEditor(td.matchers.contains('currentDiff.diff'))).thenReturn('++OMG');
-      var outputPath = tmpdir + '/nonEmpty';
+      let outputPath = tmpdir + '/nonEmpty';
       fixturify.writeSync(tmpdir, {
         nonEmpty: 'first this line'
       });
 
-      var file = new EditFileDiff({
+      let file = new EditFileDiff({
         info: {
           outputPath: outputPath,
           render: function() { return 'then this line'; }
