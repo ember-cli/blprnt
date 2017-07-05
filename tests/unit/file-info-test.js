@@ -14,7 +14,6 @@ var assign     = require('ember-cli-lodash-subset').assign;
 var mkTmpDirIn = require('../helpers/mk-tmp-dir-in');
 var td         = require('testdouble');
 var chalk      = require('chalk');
-var EditFileDiff = require('../../lib/edit-file-diff');
 var testOutputPath;
 
 var FIXTURES = path.join(__dirname, '../../tests-fixtures/file-info/');
@@ -193,7 +192,7 @@ describe('Unit - FileInfo', function() {
       validOptions.inputPath = binary;
       var fileInfo = new FileInfo(validOptions);
 
-      return fileInfo.confirmOverwrite('test.png').then(function(action) {
+      return fileInfo.confirmOverwrite('test.png').then(function(/*action*/) {
         td.verify(ui.prompt(td.matchers.argThat(function(options) {
           return (
             options.choices.length === 2 &&
@@ -299,9 +298,7 @@ describe('Unit - FileInfo', function() {
         info.EditFileDiff = EditFileDiff;
         function EditFileDiff() { }
 
-        var editWasCalled = 0;
         EditFileDiff.prototype.edit = function() {
-          editWasCalled++;
           return RSVP.Promise.resolve();
         };
         var task = info.confirmOverwriteTask();
@@ -409,8 +406,8 @@ describe('Unit - FileInfo', function() {
             default: false,
             message: chalk.red('Overwrite') + ' example.txt?',
           })), { times: 1 });
-        })
+        });
       });
-    })
+    });
   });
 });

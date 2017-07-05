@@ -55,12 +55,12 @@ function resetCalled() {
 }
 
 var instrumented = {
-  locals: function(opts) {
+  locals(/*opts*/) {
     localsCalled = true;
     return this._super.locals.apply(this, arguments);
   },
 
-  normalizeEntityName: function(name) {
+  normalizeEntityName(/*name*/) {
     normalizeEntityNameCalled = true;
     return this._super.normalizeEntityName.apply(this, arguments);
   },
@@ -70,17 +70,17 @@ var instrumented = {
     return this._super.fileMapTokens.apply(this, arguments);
   },
 
-  filesPath: function(opts) {
+  filesPath: function(/*opts*/) {
     filesPathCalled = true;
     return this._super.filesPath.apply(this, arguments);
   },
 
-  beforeInstall: function(opts) {
+  beforeInstall: function(/*opts*/) {
     beforeInstallCalled = true;
     return this._super.beforeInstall.apply(this, arguments);
   },
 
-  afterInstall: function(opts) {
+  afterInstall: function(/*opts*/) {
     afterInstallCalled = true;
     return this._super.afterInstall.apply(this, arguments);
   },
@@ -277,7 +277,7 @@ describe('Blueprint', function() {
     it('throws an error if path is provided', function() {
       expect(function() {
         Blueprint.lookup('foo');
-      }).to.throw('Blueprint.lookup(name, { paths: [/* required */]})')
+      }).to.throw('Blueprint.lookup(name, { paths: [/* required */]})');
     });
 
     it('throws an error if no blueprint is found', function() {
@@ -977,15 +977,11 @@ help in detail');
   });
 
   describe('addPackageToProject', function() {
-    var blueprint;
-    var ui;
-    var tmpdir;
+    let blueprint;
 
     beforeEach(function() {
-      return mkTmpDirIn(tmproot).then(function(dir) {
-        tmpdir = dir;
+      return mkTmpDirIn(tmproot).then(function(/*dir*/) {
         blueprint = new Blueprint(basicBlueprint);
-        ui        = new MockUI();
       });
     });
 
@@ -1013,13 +1009,11 @@ help in detail');
   describe('addPackagesToProject', function() {
     var blueprint;
     var ui;
-    var tmpdir;
     var NpmInstallTask;
     var taskNameLookedUp;
 
     beforeEach(function() {
-      return mkTmpDirIn(tmproot).then(function(dir) {
-        tmpdir = dir;
+      return mkTmpDirIn(tmproot).then(function(/*dir*/) {
         blueprint = new Blueprint(basicBlueprint);
         ui        = new MockUI();
         blueprint.taskFor = function(name) {
@@ -1151,16 +1145,12 @@ help in detail');
 
   describe('removePackageFromProject', function() {
     var blueprint;
-    var ui;
-    var tmpdir;
     var NpmUninstallTask;
     var taskNameLookedUp;
 
     beforeEach(function() {
-      return mkTmpDirIn(tmproot).then(function(dir) {
-        tmpdir = dir;
+      return mkTmpDirIn(tmproot).then(function(/*dir*/) {
         blueprint = new Blueprint(basicBlueprint);
-        ui        = new MockUI();
         blueprint.taskFor = function(name) {
           taskNameLookedUp = name;
           return new NpmUninstallTask();
@@ -1187,13 +1177,11 @@ help in detail');
   describe('removePackagesFromProject', function() {
     var blueprint;
     var ui;
-    var tmpdir;
     var NpmUninstallTask;
     var taskNameLookedUp;
 
     beforeEach(function() {
-      return mkTmpDirIn(tmproot).then(function(dir) {
-        tmpdir = dir;
+      return mkTmpDirIn(tmproot).then(function(/*dir*/) {
         blueprint = new Blueprint(basicBlueprint);
         ui        = new MockUI();
         blueprint.taskFor = function(name) {
@@ -1309,18 +1297,14 @@ help in detail');
   describe('addBowerPackageToProject', function() {
     var blueprint;
     var ui;
-    var tmpdir;
     var BowerInstallTask;
-    var taskNameLookedUp;
 
     beforeEach(function() {
-      return mkTmpDirIn(tmproot).then(function(dir) {
-        tmpdir = dir;
+      return mkTmpDirIn(tmproot).then(function(/*dir*/) {
         blueprint = new Blueprint(basicBlueprint);
         ui        = new MockUI();
         blueprint.ui = ui;
-        blueprint.taskFor = function(name) {
-          taskNameLookedUp = name;
+        blueprint.taskFor = function(/*name*/) {
           return new BowerInstallTask();
         };
       });
@@ -1374,16 +1358,12 @@ help in detail');
 
   describe('addBowerPackagesToProject', function() {
     var blueprint;
-    var ui;
-    var tmpdir;
     var BowerInstallTask;
     var taskNameLookedUp;
 
     beforeEach(function() {
-      return mkTmpDirIn(tmproot).then(function(dir) {
-        tmpdir = dir;
+      return mkTmpDirIn(tmproot).then(function(/*dir*/) {
         blueprint = new Blueprint(basicBlueprint);
-        ui        = new MockUI();
         blueprint.taskFor = function(name) {
           taskNameLookedUp = name;
           return new BowerInstallTask();
@@ -1483,14 +1463,10 @@ help in detail');
 
   describe('addAddonToProject', function() {
     var blueprint;
-    var ui;
-    var tmpdir;
 
     beforeEach(function() {
-      return mkTmpDirIn(tmproot).then(function(dir) {
-        tmpdir = dir;
+      return mkTmpDirIn(tmproot).then(function(/*dir*/) {
         blueprint = new Blueprint(basicBlueprint);
-        ui        = new MockUI();
       });
     });
 
@@ -1518,13 +1494,11 @@ help in detail');
   describe('addAddonsToProject', function() {
     var blueprint;
     var ui;
-    var tmpdir;
     var AddonInstallTask;
     var taskNameLookedUp;
 
     beforeEach(function() {
-      return mkTmpDirIn(tmproot).then(function(dir) {
-        tmpdir = dir;
+      return mkTmpDirIn(tmproot).then(function(/*dir*/) {
         blueprint = new Blueprint(basicBlueprint);
         ui        = new MockUI();
         blueprint.taskFor = function(name) {
@@ -1656,16 +1630,13 @@ help in detail');
 
   describe('lookupBlueprint', function() {
     var blueprint;
-    var ui;
     var tmpdir;
     var project;
-    var filename;
 
     beforeEach(function() {
       return mkTmpDirIn(tmproot).then(function(dir) {
         tmpdir = dir;
         blueprint = new Blueprint(basicBlueprint);
-        ui        = new MockUI();
         project   = new MockProject();
         // normally provided by `install`, but mocked here for testing
         project.root = tmpdir;
@@ -1673,7 +1644,6 @@ help in detail');
         project.blueprintLookupPaths = function() {
           return [fixtureBlueprints, __dirname + '/../../blueprints'];
         };
-        filename = 'foo-bar-baz.txt';
       });
     });
 
