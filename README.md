@@ -53,4 +53,4 @@ path/to/destination/
 
 ## Contributors
 
-see: [Contributors.md](CONTRiBUTORS.md)
+see: [Contributors.md](CONTRIBUTORS.md)
