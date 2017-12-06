@@ -15,7 +15,7 @@ describe('Blueprint', function() {
 
   beforeEach(function() {
     tmpdir = tmp.in(tmproot);
-    ui = new MockUI()
+    ui = new MockUI();
   });
 
   it('creates the correct files and directories', function() {

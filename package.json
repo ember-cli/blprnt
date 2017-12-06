@@ -22,6 +22,7 @@
     "console-ui": "^1.0.2",
     "fixturify": "^0.3.2",
     "mocha": "^3.2.0",
+    "mocha-eslint": "^3.0.1",
     "temp": "^0.8.3",
     "testdouble": "^1.9.0",
     "tmp-sync": "^1.0.1"
